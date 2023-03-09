@@ -27,8 +27,8 @@ public class UpdateExtractionListModel extends AbstractListModel<String> {
     @Override
     public String getElementAt(int index) {
         var a = list.get(index).getExtractionSearchModel();
-        if (a.getMatchString() != null && !a.getMatchString().equals("")) {
-            return a.getMatchString();
+        if (a.getSearchString() != null && !a.getSearchString().equals("")) {
+            return a.getSearchString();
         }
         return "Undefined";
     }

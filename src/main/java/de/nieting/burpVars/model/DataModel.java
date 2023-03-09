@@ -1,24 +1,33 @@
 package de.nieting.burpVars.model;
 
 import burp.api.montoya.core.ToolType;
+import burp.api.montoya.http.message.HttpRequestResponse;
 import burp.api.montoya.http.message.params.HttpParameter;
 import burp.api.montoya.http.message.params.HttpParameterType;
 import burp.api.montoya.http.message.requests.HttpRequest;
+import burp.api.montoya.http.message.responses.HttpResponse;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import de.nieting.burpVars.API;
 import de.nieting.burpVars.model.constants.Constants;
 import de.nieting.burpVars.model.constants.VarTableColumn;
+import de.nieting.burpVars.model.serializer.HttpRequestDeserializer;
+import de.nieting.burpVars.model.serializer.HttpRequestSerializer;
+import de.nieting.burpVars.model.serializer.HttpResponseDeserializer;
+import de.nieting.burpVars.model.serializer.HttpResponseSerializer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.swing.table.AbstractTableModel;
+import javax.xml.crypto.Data;
 import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -32,16 +41,38 @@ public class DataModel extends AbstractTableModel {
 
     private List<VariableModel> variables = new ArrayList<>();
 
-    @JsonIgnore
     public Consumer<Integer> updateUICallback = (Integer a) -> {};
+
+    private static final ObjectMapper objectMapper = getObjectMapper();
+
+    private static DataModel self = null;
+
+    public static boolean isInitialized;
+
+    private static ObjectMapper getObjectMapper() {
+        var objectMapper = new ObjectMapper();
+        var module = new SimpleModule();
+        module.addDeserializer(HttpResponse.class, new HttpResponseDeserializer());
+        module.addSerializer(HttpResponse.class, new HttpResponseSerializer());
+
+        module.addDeserializer(HttpRequest.class, new HttpRequestDeserializer());
+        module.addSerializer(HttpRequest.class, new HttpRequestSerializer());
+
+        objectMapper.registerModule(module);
+        return objectMapper;
+    }
+
+    private DataModel() {
+        self = this;
+    }
 
     public static DataModel fromJson(String json) {
         var dataModel = new DataModel();
         if (json == null) {
+            isInitialized = true;
             return dataModel;
         }
 
-        var objectMapper = new ObjectMapper();
         try {
             VariableModel[] vars = objectMapper.readValue(json, VariableModel[].class);
             dataModel.setVariables(new ArrayList<>(Arrays.asList(vars)));
@@ -50,18 +81,20 @@ public class DataModel extends AbstractTableModel {
             API.getInstance().getApi().logging().raiseErrorEvent("Loading saved project data failed");
         }
 
+        isInitialized = true;
+
         return dataModel;
     }
 
     synchronized public void loadModelFromFile(File f) throws IOException {
-        var objectMapper = new ObjectMapper();
+        isInitialized = false;
         VariableModel[] vars = objectMapper.readValue(f, VariableModel[].class);
         setVariables(new ArrayList<>(Arrays.asList(vars)));
+        isInitialized = true;
         fireTableDataChanged();
     }
 
     synchronized public void saveModelToFile(File f) {
-        var objectMapper = new ObjectMapper();
         try {
             objectMapper.writeValue(f, getVariables());
         } catch (Exception e) {
@@ -71,7 +104,10 @@ public class DataModel extends AbstractTableModel {
     }
 
     public String serialize() {
-        var objectMapper = new ObjectMapper();
+        if (!DataModel.isInitialized) {
+            LOGGER.warn("Serializing data, although data model is not initialized.");
+        }
+
         try {
             return objectMapper.writeValueAsString(getVariables());
         } catch(Exception e) {
@@ -80,7 +116,7 @@ public class DataModel extends AbstractTableModel {
         }
     }
 
-    synchronized public void saveToProject() {
+    synchronized private void saveInstance() {
         serializationTimer.cancel();
         serializationTimer = new Timer();
         serializationTimer.schedule(new TimerTask() {
@@ -93,7 +129,11 @@ public class DataModel extends AbstractTableModel {
                 if (API.getInstance() != null)
                     API.getInstance().getApi().persistence().extensionData().setString("VARIABLES", data);
             }
-        }, 500);
+        }, 1000);
+    }
+
+    synchronized public static void saveToProject() {
+        self.saveInstance();
     }
 
     @Override
@@ -166,6 +206,7 @@ public class DataModel extends AbstractTableModel {
         }
 
         updateUICallback.accept(rowIndex);
+        saveToProject();
     }
 
     public void addNewVariable() {
@@ -182,6 +223,22 @@ public class DataModel extends AbstractTableModel {
         fireTableDataChanged();
     }
 
+    public void duplicateVariable(VariableModel model) {
+        try {
+            VariableModel dup = objectMapper.readValue(objectMapper.writeValueAsString(model), VariableModel.class);
+            dup.setLastReplaced(null);
+            dup.setLastUpdated(null);
+            dup.setVariableValue(null);
+            dup.setVariableName(dup.getVariableName() + "_copy");
+            dup.setHistoryListModel(new HistoryListModel());
+            variables.add(dup);
+            saveToProject();
+            fireTableDataChanged();
+        } catch (Exception e) {
+            LOGGER.error("Failed to duplicate variable", e);
+        }
+    }
+
     synchronized public List<VariableModel> getVariables() {
         return variables;
     }
@@ -190,33 +247,16 @@ public class DataModel extends AbstractTableModel {
         this.variables = variables;
     }
 
+    public VariableModel getVariableForName(String name) {
+        return getVariables().stream().filter(i -> i.getVariableName().equals(name)).findFirst().orElse(null);
+    }
 
-    private String formatDate(Date date) {
+    public static String formatDate(Date date) {
         if (date == null) {
             return "not yet";
         }
         var a = DateFormat.getDateTimeInstance();
         return a.format(date);
-    }
-
-    public void replacedNow(VariableModel model) {
-        model.setLastReplacedNow();
-        for (var v=0; v < variables.size(); v++) {
-            if (model.getVariableName().equals(variables.get(v).getVariableName())) {
-                fireTableCellUpdated(v, VarTableColumn.LAST_REPLACED.getColumnIdx());
-                break;
-            }
-        }
-    }
-
-    public void updatedNow(VariableModel model) {
-        model.setLastUpdated(new Date());
-        for (var v=0; v < variables.size(); v++) {
-            if (model.getVariableName().equals(variables.get(v).getVariableName())) {
-                fireTableCellUpdated(v, VarTableColumn.LAST_UPDATED.getColumnIdx());
-                break;
-            }
-        }
     }
 
     public HttpRequest replaceVariable(String varName, HttpRequest req, ToolType source) {
@@ -259,13 +299,11 @@ public class DataModel extends AbstractTableModel {
             var headerValue = header.value().replace(replaceString, varModel.getVariableValue());
             if (headerName.contains(replaceString)) {
                 LOGGER.debug("Variable: {}, replacing variable in request header name {}", varName, headerName);
-                replacedNow(varModel);
                 newReq = newReq
                         .withRemovedHeader(headerName)
                         .withAddedHeader(headerName.replace(replaceString, varModel.getVariableValue()), headerValue);
             } else if (header.value().contains(replaceString)) {
                 LOGGER.debug("Variable: {}, replacing variable in request header value", varName);
-                replacedNow(varModel);
                 newReq = newReq.withUpdatedHeader(headerName, headerValue);
             }
         }
@@ -273,14 +311,12 @@ public class DataModel extends AbstractTableModel {
         var bodyS = newReq.bodyToString();
         if (bodyS.contains(replaceString)) {
             LOGGER.debug("Variable: {}, replacing variable in request body", varName);
-            replacedNow(varModel);
             newReq = newReq.withBody(bodyS.replace(replaceString, varModel.getVariableValue()));
         }
 
         var paths = newReq.path();
         if (paths.contains(replaceString)) {
             LOGGER.debug("Variable: {}, replacing variable in url path", varName);
-            replacedNow(varModel);
             newReq = newReq.withPath(paths.replace(replaceString, varModel.getVariableValue()));
         }
 
@@ -297,13 +333,11 @@ public class DataModel extends AbstractTableModel {
             if (paramName.contains(replaceString)) {
                 // replaces value and name
                 LOGGER.debug("Variable: {}, replacing variable in parameter name {}", varName, paramName);
-                replacedNow(varModel);
                 newReq = newReq
                         .withRemovedParameters(param)
                         .withAddedParameters(HttpParameter.urlParameter(paramNameEnc, paramValueEnc));
             } else if (paramValue.contains(replaceString)) {
                 LOGGER.debug("Variable: {}, replacing variable in parameter value", varName);
-                replacedNow(varModel);
                 newReq = newReq.withUpdatedParameters(HttpParameter.urlParameter(paramName, paramValueEnc));
             }
         }
@@ -312,12 +346,11 @@ public class DataModel extends AbstractTableModel {
     }
 
 
-    public void updateVariableValue(VariableModel variableModel, String variableValue) {
+    public void triggerVariableUIUpdate(String variableName, VarTableColumn column) {
         for (int i = 0; i < variables.size(); i++) {
             var v = variables.get(i);
-            if (v.getVariableName().equals(variableModel.getVariableName())) {
-                v.setVariableValue(variableValue);
-                fireTableCellUpdated(i, VarTableColumn.VARIABLE_VALUE.getColumnIdx());
+            if (v.getVariableName().equals(variableName)) {
+                fireTableCellUpdated(i, column.getColumnIdx());
                 updateUICallback.accept(i);
                 break;
             }

@@ -5,10 +5,10 @@ import de.nieting.burpVars.model.constants.ExtractionScopeMode;
 public class UpdateExtractionModel {
     private ExtractionScopeMode extractionScope = ExtractionScopeMode.IN_SCOPE;
     private String extractionUrl;
-    private MatchingModel extractionSearchModel = MatchingModel.forVariableUpdate();
+    private SearchModel extractionSearchModel = SearchModel.forVariableUpdate();
 
     private boolean updateOnlyWhenRequestMatches = false;
-    private MatchingModel requestSearchCondition = MatchingModel.forRequests();
+    private SearchModel requestSearchCondition = SearchModel.forRequests();
 
     public ExtractionScopeMode getExtractionScope() {
         return extractionScope;
@@ -26,19 +26,19 @@ public class UpdateExtractionModel {
         this.extractionUrl = extractionUrl;
     }
 
-    public MatchingModel getExtractionSearchModel() {
+    public SearchModel getExtractionSearchModel() {
         return extractionSearchModel;
     }
 
-    public void setExtractionSearchModel(MatchingModel extractionSearchModel) {
+    public void setExtractionSearchModel(SearchModel extractionSearchModel) {
         this.extractionSearchModel = extractionSearchModel;
     }
 
-    public MatchingModel getRequestSearchCondition() {
+    public SearchModel getRequestSearchCondition() {
         return requestSearchCondition;
     }
 
-    public void setRequestSearchCondition(MatchingModel requestSearchCondition) {
+    public void setRequestSearchCondition(SearchModel requestSearchCondition) {
         this.requestSearchCondition = requestSearchCondition;
     }
 

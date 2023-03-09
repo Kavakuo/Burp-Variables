@@ -1,22 +1,22 @@
 package de.nieting.burpVars.model.constants;
 
-public enum SearchMode {
-    CONTAINS(0),
-    REGEX(1);
+public enum SearchOption {
+    MATCHING(0),
+    NOT_MATCHING(1);
 
     private int comboBoxIndex;
 
-    private SearchMode(int comboBoxIndex) {
+    private SearchOption(int comboBoxIndex) {
         this.comboBoxIndex = comboBoxIndex;
     }
 
-    public static SearchMode forComboBoxIndex(int idx) {
+    public static SearchOption forComboBoxIndex(int idx) {
         switch (idx) {
             case 0 -> {
-                return CONTAINS;
+                return MATCHING;
             }
             case 1 -> {
-                return REGEX;
+                return NOT_MATCHING;
             }
             default -> {
                 throw new RuntimeException("Invalid index");

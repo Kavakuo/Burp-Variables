@@ -1,6 +1,6 @@
 package de.nieting.burpVars.model.constants;
 
-public enum SearchInLocation {
+public enum SearchLocation {
     RESPONSE_HEADER,
     RESPONSE_BODY,
     REQUEST_URL,

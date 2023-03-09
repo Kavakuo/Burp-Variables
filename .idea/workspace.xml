@@ -5,46 +5,37 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0f48220c-45e2-4c16-b44c-aee3edbcb231" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gradlew" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gradlew.bat" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/settings.gradle" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/de/nieting/burpVars/API.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/de/nieting/burpVars/Main.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/de/nieting/burpVars/UI/HelpLabel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/de/nieting/burpVars/UI/OnChangeListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/de/nieting/burpVars/UI/RoundedBorder.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/de/nieting/burpVars/UI/SettingsUI.form" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/de/nieting/burpVars/UI/SettingsUI.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/de/nieting/burpVars/VariableContextMenu.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/de/nieting/burpVars/VariableHttpHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/de/nieting/burpVars/log/BurpLogAppender.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/de/nieting/burpVars/model/DataModel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/de/nieting/burpVars/model/MatchingModel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/de/nieting/burpVars/model/ReplaceListModel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/de/nieting/burpVars/model/ReplaceModel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/de/nieting/burpVars/model/ToolSelectionModel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/de/nieting/burpVars/model/UpdateExtractionListModel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/de/nieting/burpVars/model/UpdateExtractionModel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/de/nieting/burpVars/model/UpdateModel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/de/nieting/burpVars/model/VariableModel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/de/nieting/burpVars/model/constants/Constants.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/de/nieting/burpVars/model/constants/ExtractionScopeMode.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/de/nieting/burpVars/model/constants/RegexCaseSensitivity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/de/nieting/burpVars/model/constants/RegexMatchOption.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/de/nieting/burpVars/model/constants/SearchInLocation.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/de/nieting/burpVars/model/constants/SearchMode.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/de/nieting/burpVars/model/constants/VarTableColumn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/log4j2.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/de/nieting/burpVars/UI/HistoryTab.form" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/de/nieting/burpVars/UI/HistoryTab.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/de/nieting/burpVars/UI/SearchOptionsPanel.form" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/de/nieting/burpVars/UI/SearchOptionsPanel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/de/nieting/burpVars/model/HistoryListModel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/de/nieting/burpVars/model/HistoryModel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/de/nieting/burpVars/model/constants/HistoryUpdateReason.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/de/nieting/burpVars/model/constants/RelevantUpdateMessage.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/de/nieting/burpVars/model/constants/SearchCaseSensitivity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/de/nieting/burpVars/model/serializer/DeflateCompressor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/de/nieting/burpVars/model/serializer/HttpRequestDeserializer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/de/nieting/burpVars/model/serializer/HttpRequestSerializer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/de/nieting/burpVars/model/serializer/HttpResponseDeserializer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/de/nieting/burpVars/model/serializer/HttpResponseSerializer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/nieting/burpVars/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/nieting/burpVars/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/nieting/burpVars/UI/SettingsUI.form" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/nieting/burpVars/UI/SettingsUI.form" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/nieting/burpVars/UI/SettingsUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/nieting/burpVars/UI/SettingsUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/nieting/burpVars/VariableContextMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/nieting/burpVars/VariableContextMenu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/nieting/burpVars/VariableHttpHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/nieting/burpVars/VariableHttpHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/nieting/burpVars/model/DataModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/nieting/burpVars/model/DataModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/nieting/burpVars/model/MatchingModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/nieting/burpVars/model/SearchModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/nieting/burpVars/model/ReplaceListModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/nieting/burpVars/model/ReplaceListModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/nieting/burpVars/model/UpdateExtractionListModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/nieting/burpVars/model/UpdateExtractionListModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/nieting/burpVars/model/UpdateExtractionModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/nieting/burpVars/model/UpdateExtractionModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/nieting/burpVars/model/VariableModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/nieting/burpVars/model/VariableModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/nieting/burpVars/model/constants/RegexCaseSensitivity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/nieting/burpVars/model/constants/RegexMatchOption.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/nieting/burpVars/model/constants/SearchOption.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/nieting/burpVars/model/constants/SearchInLocation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/nieting/burpVars/model/constants/SearchLocation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/nieting/burpVars/model/constants/SearchMode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/nieting/burpVars/model/constants/SearchMode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/log4j2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/log4j2.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -137,6 +128,7 @@
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;project.structure.last.edited&quot;: &quot;Libraries&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
@@ -149,6 +141,7 @@
       <recent name="$PROJECT_DIR$/src/main/java/UI" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="de.nieting.burpVars.model.serializer" />
       <recent name="model" />
     </key>
   </component>
@@ -156,6 +149,19 @@
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="main.Main" />
       <module name="Burp-Variables.main" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="de.nieting.burpVars.Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="de.nieting.burpVars.Main" />
+      <module name="Burp-Variables.main" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="de.nieting.burpVars.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -181,7 +187,7 @@
       <DebugAllEnabled>false</DebugAllEnabled>
       <method v="2" />
     </configuration>
-    <configuration name="Burp-Variables [jar]" type="GradleRunConfiguration" factoryName="Gradle">
+    <configuration name="Burp-Variables [jar]" type="GradleRunConfiguration" factoryName="Gradle" activateToolWindowBeforeRun="false">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -224,6 +230,7 @@
       <method v="2" />
     </configuration>
     <list>
+      <item itemvalue="Application.de.nieting.burpVars.Main" />
       <item itemvalue="Application.Main" />
       <item itemvalue="Gradle.Burp-Variables [jar]" />
       <item itemvalue="Gradle.Burp-Variables [clean]" />
@@ -232,6 +239,7 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.de.nieting.burpVars.Main" />
         <item itemvalue="Gradle.Burp-Variables [clean]" />
         <item itemvalue="Application.Main" />
       </list>
@@ -257,7 +265,16 @@
       <workItem from="1676573252160" duration="16660000" />
       <workItem from="1676658809296" duration="21469000" />
       <workItem from="1676726830997" duration="32539000" />
-      <workItem from="1676804368680" duration="32081000" />
+      <workItem from="1676804368680" duration="33624000" />
+      <workItem from="1676912568018" duration="13828000" />
+      <workItem from="1677007016901" duration="7419000" />
+      <workItem from="1677096700958" duration="7200000" />
+      <workItem from="1677176383284" duration="15915000" />
+      <workItem from="1677423840064" duration="20426000" />
+      <workItem from="1677779386192" duration="1972000" />
+      <workItem from="1678043199554" duration="3568000" />
+      <workItem from="1678306521946" duration="614000" />
+      <workItem from="1678397693458" duration="3366000" />
     </task>
     <servers />
   </component>
@@ -267,5 +284,31 @@
   <component name="VgoProject">
     <integration-enabled>false</integration-enabled>
     <settings-migrated>true</settings-migrated>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/de/nieting/burpVars/VariableHttpHandler.java</url>
+          <line>48</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-api/2.19.0/e50c05b05437e7f5fc11609b8366a5e151f74461/log4j-api-2.19.0-sources.jar!/org/apache/logging/log4j/spi/AbstractLogger.java</url>
+          <line>1443</line>
+          <option name="timeStamp" value="20" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/de/nieting/burpVars/UI/SettingsUI.java</url>
+          <line>227</line>
+          <option name="timeStamp" value="41" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+    <pin-to-top-manager>
+      <pinned-members>
+        <PinnedItemInfo parentTag="org.apache.logging.log4j.core.config.xml.XmlConfiguration" memberName="appenders" />
+      </pinned-members>
+    </pin-to-top-manager>
   </component>
 </project>

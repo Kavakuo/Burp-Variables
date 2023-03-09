@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.swing.*;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 @JsonAutoDetect(
@@ -14,10 +15,10 @@ import java.util.List;
         isGetterVisibility = JsonAutoDetect.Visibility.NONE,
         creatorVisibility = JsonAutoDetect.Visibility.NONE
 )
-public class ReplaceListModel extends AbstractListModel<String> {
+public class HistoryListModel extends AbstractListModel<String> {
 
-    @JsonProperty("replaceList")
-    private List<SearchModel> list = new ArrayList<>();
+    @JsonProperty("historyList")
+    private LinkedList<HistoryModel> list = new LinkedList<>();
 
     @Override
     public int getSize() {
@@ -27,28 +28,25 @@ public class ReplaceListModel extends AbstractListModel<String> {
     @Override
     public String getElementAt(int index) {
         var a = list.get(index);
-        if (a.getSearchString() != null && !a.getSearchString().equals("")) {
-            return a.getSearchString();
+        return a.getListEntry();
+    }
+
+
+    public void addHistoryModel(HistoryModel a) {
+        list.addFirst(a);
+        while (list.size() > 20) {
+            list.removeLast();
+            fireIntervalRemoved(this, list.size() - 1, list.size() - 1);
         }
-        return "Undefined";
+        fireIntervalAdded(this, 0, 0);
+        fireContentsChanged(this, 1, list.size() - 1);
     }
 
-
-    public void addReplaceMatchModel() {
-        list.add(SearchModel.forRequests());
-        fireIntervalAdded(this, list.size() - 1, list.size() - 1);
-    }
-
-    public void removeReplaceMatchModel(int index) {
-        list.remove(index);
-        fireIntervalRemoved(this, 0, Math.max(0, list.size() - 1));
-    }
-
-    public List<SearchModel> getList() {
+    public List<HistoryModel> getList() {
         return list;
     }
 
-    public void setList(List<SearchModel> list) {
+    public void setList(LinkedList<HistoryModel> list) {
         this.list = list;
     }
 

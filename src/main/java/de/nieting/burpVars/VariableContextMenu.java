@@ -1,12 +1,17 @@
 package de.nieting.burpVars;
 
+import burp.api.montoya.http.message.HttpRequestResponse;
 import burp.api.montoya.http.message.requests.HttpRequest;
 import burp.api.montoya.ui.contextmenu.ContextMenuEvent;
 import burp.api.montoya.ui.contextmenu.ContextMenuItemsProvider;
 import burp.api.montoya.ui.contextmenu.MessageEditorHttpRequestResponse;
 import de.nieting.burpVars.model.DataModel;
+import de.nieting.burpVars.model.HistoryModel;
 import de.nieting.burpVars.model.VariableModel;
 import de.nieting.burpVars.model.constants.Constants;
+import de.nieting.burpVars.model.constants.HistoryUpdateReason;
+import de.nieting.burpVars.model.constants.RelevantUpdateMessage;
+import de.nieting.burpVars.model.constants.VarTableColumn;
 
 import javax.swing.*;
 import java.awt.*;
@@ -26,14 +31,19 @@ public class VariableContextMenu implements ContextMenuItemsProvider {
         this.dataModel = model;
     }
 
-    private List<Component> getVariableUpdateMenu(String value) {
+    private List<Component> getVariableUpdateMenu(String value, HttpRequestResponse reqResp, RelevantUpdateMessage relevantUpdateMessage) {
         var ret = new ArrayList<Component>();
         for (var variable : dataModel.getVariables()) {
             var item = new JMenuItem(variable.getVariableName());
             item.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    dataModel.updateVariableValue(variable, value);
+                    var history = HistoryModel.manualUpdate(reqResp.request(), reqResp.response(), value);
+                    history.setRelevantUpdateMessage(relevantUpdateMessage);
+                    history.setSource("Context menu");
+                    variable.updateVariableValue(history);
+                    dataModel.triggerVariableUIUpdate(variable.getVariableName(), VarTableColumn.VARIABLE_VALUE);
+                    dataModel.saveToProject();
                 }
             });
             ret.add(item);
@@ -91,12 +101,16 @@ public class VariableContextMenu implements ContextMenuItemsProvider {
         var selectionOffset = editor.selectionOffsets();
         if (selectionOffset.isPresent()) {
             var updateVariableMenu = new JMenu("Update Variable");
-            var httpMsg = editor.requestResponse().request().toString();
+            String httpMsg;
+            RelevantUpdateMessage relevantMsg = RelevantUpdateMessage.REQUEST;
             if (editor.selectionContext() == MessageEditorHttpRequestResponse.SelectionContext.RESPONSE) {
                 httpMsg = editor.requestResponse().response().toString();
+                relevantMsg = RelevantUpdateMessage.RESPONSE;
+            } else {
+                httpMsg = editor.requestResponse().request().toString();
             }
             var selectedText = httpMsg.substring(selectionOffset.get().startIndexInclusive(), selectionOffset.get().endIndexExclusive());
-            getVariableUpdateMenu(selectedText).forEach(updateVariableMenu::add);
+            getVariableUpdateMenu(selectedText, editor.requestResponse(), relevantMsg).forEach(updateVariableMenu::add);
             menu.add(updateVariableMenu);
         }
 

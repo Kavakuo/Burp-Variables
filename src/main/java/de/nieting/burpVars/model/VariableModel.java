@@ -1,6 +1,13 @@
 package de.nieting.burpVars.model;
 
+import burp.api.montoya.http.message.HttpRequestResponse;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import de.nieting.burpVars.model.constants.HistoryUpdateReason;
+import de.nieting.burpVars.model.constants.RelevantUpdateMessage;
+
 import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class VariableModel {
 
@@ -11,8 +18,13 @@ public class VariableModel {
     private UpdateModel updateModel = new UpdateModel();
     private ReplaceModel replaceModel = new ReplaceModel();
 
+    private HistoryListModel historyListModel = new HistoryListModel();
+
     private Date lastUpdated;
     private Date lastReplaced;
+
+    @JsonIgnore
+    private Timer timer = new Timer();
 
     public String getVariableName() {
         return variableName;
@@ -27,9 +39,22 @@ public class VariableModel {
     }
 
     public void setVariableValue(String variableValue) {
-        if (variableValue != null && !variableValue.equals(this.variableValue))
-            setLastUpdated(new Date());
+        if (variableValue == null || variableValue.equals(this.variableValue)) return;
         this.variableValue = variableValue;
+        if (!DataModel.isInitialized) return;
+
+        setLastUpdated(new Date());
+        timer.cancel();
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                var history = HistoryModel.manualUpdate(null, null, variableValue);
+                history.setSource("Variable Editor");
+                historyListModel.addHistoryModel(history);
+                DataModel.saveToProject();
+            }
+        }, 750);
     }
 
     public boolean isUpdateAutomatically() {
@@ -74,5 +99,23 @@ public class VariableModel {
 
     public void setLastReplacedNow() {
         setLastReplaced(new Date());
+    }
+
+    public void updateVariableValue(HistoryModel historyModel) {
+        if (historyModel.getNewVarValue() != null && !historyModel.getNewVarValue().equals(this.variableValue)) {
+            setLastUpdated(new Date());
+            variableValue = historyModel.getNewVarValue();
+            historyListModel.addHistoryModel(historyModel);
+        }
+    }
+
+    public HistoryListModel getHistoryListModel() {
+        return historyListModel;
+    }
+
+    public void setHistoryListModel(HistoryListModel historyListModel) {
+        timer.cancel();
+        timer = new Timer();
+        this.historyListModel = historyListModel;
     }
 }

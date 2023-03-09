@@ -6,13 +6,20 @@ import burp.api.montoya.http.handler.HttpRequestToBeSent;
 import burp.api.montoya.http.handler.HttpResponseReceived;
 import burp.api.montoya.http.handler.RequestToBeSentAction;
 import burp.api.montoya.http.handler.ResponseReceivedAction;
+import burp.api.montoya.http.message.HttpRequestResponse;
 import burp.api.montoya.http.message.requests.HttpRequest;
 import de.nieting.burpVars.model.DataModel;
+import de.nieting.burpVars.model.HistoryModel;
 import de.nieting.burpVars.model.VariableModel;
 import de.nieting.burpVars.model.constants.Constants;
+import de.nieting.burpVars.model.constants.HistoryUpdateReason;
+import de.nieting.burpVars.model.constants.RelevantUpdateMessage;
+import de.nieting.burpVars.model.constants.VarTableColumn;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.security.MessageDigest;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -26,7 +33,13 @@ public class VariableHttpHandler implements HttpHandler {
     public VariableHttpHandler(MontoyaApi api, DataModel dataModel) {
         this.api = api;
         this.dataModel = dataModel;
+
     }
+
+    private String sentReq;
+
+
+
 
     @Override
     public RequestToBeSentAction handleHttpRequestToBeSent(HttpRequestToBeSent requestToBeSent) {
@@ -58,23 +71,40 @@ public class VariableHttpHandler implements HttpHandler {
 
         LOGGER.debug("Found {} variables in request", varNames.size());
 
-        var availableVars = dataModel.getVariables().stream().map(VariableModel::getVariableName).toList();
         HttpRequest mod = requestToBeSent;
         for (var v: varNames) {
-            if (!availableVars.contains(v)) {
+            var variable = dataModel.getVariableForName(v);
+            if (variable == null) {
                 LOGGER.warn("Unknown variable '{}' in request", v);
                 api.logging().raiseErrorEvent(String.format("Unknown variable '%s' in request", v));
                 continue;
             }
 
-            mod = dataModel.replaceVariable(v, mod, requestToBeSent.toolSource().toolType());
+            var tmp = dataModel.replaceVariable(v, mod, requestToBeSent.toolSource().toolType());
+            if (tmp != mod) {
+                variable.setLastReplaced(new Date());
+                var historyEntry = HistoryModel.replace(tmp, requestToBeSent);
+                historyEntry.setNewVarValue(variable.getVariableValue());
+                historyEntry.setSource(requestToBeSent.toolSource().toolType().toolName());
+                variable.getHistoryListModel().addHistoryModel(historyEntry);
+                dataModel.triggerVariableUIUpdate(v, VarTableColumn.LAST_REPLACED);
+                dataModel.saveToProject();
+            }
+            mod = tmp;
         }
+
+        sentReq = mod.toString();
 
         return RequestToBeSentAction.continueWith(mod);
     }
 
     @Override
     public ResponseReceivedAction handleHttpResponseReceived(HttpResponseReceived responseReceived) {
+        if (sentReq.equals(responseReceived.initiatingRequest().toString())) {
+            LOGGER.info("Received req");
+        }
+
+
         var variables = dataModel.getVariables().stream()
                 .filter(VariableModel::isUpdateAutomatically)
                 .filter(i -> i.getUpdateModel().getToolSelectionModel().validToolSource(responseReceived.toolSource().toolType()))
@@ -119,7 +149,10 @@ public class VariableHttpHandler implements HttpHandler {
                 var extracted = extraction.getExtractionSearchModel().extractFromResponse(responseReceived);
                 if (extracted != null) {
                     success = true;
-                    dataModel.updateVariableValue(v, extracted);
+                    var history = HistoryModel.automaticUpdate(responseReceived.initiatingRequest(), responseReceived, extracted);
+                    history.setSource(responseReceived.toolSource().toolType().toolName());
+                    v.updateVariableValue(history);
+                    dataModel.triggerVariableUIUpdate(v.getVariableName(), VarTableColumn.VARIABLE_VALUE);
                     LOGGER.info("Variable: {}, updated to {}", v.getVariableName(), extracted);
                     break;
                 }
@@ -127,6 +160,8 @@ public class VariableHttpHandler implements HttpHandler {
 
             if (!success) {
                 LOGGER.debug("Variable: {}, not updated, no extraction regex matched", v.getVariableName());
+            } else {
+                dataModel.saveToProject();
             }
         }
 

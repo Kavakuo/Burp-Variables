@@ -10,9 +10,12 @@
         </BurpLogAppender>
     </Appenders>
     <Loggers>
-        <Root level="debug">
+        <Logger name="de.nieting" level="debug" additivity="false">
             <AppenderRef ref="Console" />
             <AppenderRef ref="BurpLogAppender"/>
+        </Logger>
+        <Root level="error">
+
         </Root>
     </Loggers>
 </Configuration>

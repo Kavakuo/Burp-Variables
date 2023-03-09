@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="de.nieting.burpVars.UI.SearchOptionsPanel">
+  <grid id="27dc6" binding="searchOptionsPanel" layout-manager="GridLayoutManager" row-count="11" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="5" left="5" bottom="5" right="5"/>
+    <constraints>
+      <xy x="20" y="20" width="370" height="434"/>
+    </constraints>
+    <properties>
+      <minimumSize width="-1" height="280"/>
+      <preferredSize width="-1" height="-1"/>
+    </properties>
+    <border type="none"/>
+    <children>
+      <component id="a5f5d" class="javax.swing.JLabel" binding="searchModeLabel">
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <labelFor value="b8529"/>
+          <text value="Search Mode"/>
+        </properties>
+      </component>
+      <hspacer id="163af">
+        <constraints>
+          <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+      </hspacer>
+      <vspacer id="e3727">
+        <constraints>
+          <grid row="10" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+        </constraints>
+      </vspacer>
+      <component id="b8529" class="javax.swing.JComboBox" binding="searchModeComboBox" default-binding="true">
+        <constraints>
+          <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <model>
+            <item value="Contains"/>
+            <item value="Regex"/>
+          </model>
+        </properties>
+      </component>
+      <component id="fb33b" class="javax.swing.JLabel" binding="searchStringLabel">
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <labelFor value="6abb3"/>
+          <text value="Search String"/>
+        </properties>
+      </component>
+      <component id="6abb3" class="javax.swing.JTextField" binding="searchStringTextField" default-binding="true">
+        <constraints>
+          <grid row="1" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="230" height="-1"/>
+          </grid>
+        </constraints>
+        <properties>
+          <font name="Monospaced"/>
+        </properties>
+      </component>
+      <component id="54263" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <labelFor value="da663"/>
+          <text value="Search Options"/>
+        </properties>
+      </component>
+      <component id="da663" class="javax.swing.JComboBox" binding="searchOptionsComboBox" default-binding="true">
+        <constraints>
+          <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <model>
+            <item value="Matching"/>
+            <item value="Not Matching"/>
+          </model>
+        </properties>
+      </component>
+      <component id="74a73" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <labelFor value="223b3"/>
+          <text value="Case Sensitivity"/>
+        </properties>
+      </component>
+      <component id="223b3" class="javax.swing.JComboBox" binding="caseSensitivityComboBox" default-binding="true">
+        <constraints>
+          <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <model>
+            <item value="Case Insensitive"/>
+            <item value="Case Sensitive"/>
+          </model>
+        </properties>
+      </component>
+      <component id="472d0" class="javax.swing.JCheckBox" binding="requestHeaderCheckBox" default-binding="true">
+        <constraints>
+          <grid row="6" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Request Header"/>
+        </properties>
+      </component>
+      <component id="7511" class="javax.swing.JCheckBox" binding="requestBodyCheckBox" default-binding="true">
+        <constraints>
+          <grid row="7" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Request Body"/>
+          <visible value="true"/>
+        </properties>
+      </component>
+      <component id="2b707" class="javax.swing.JCheckBox" binding="responseHeaderCheckBox" default-binding="true">
+        <constraints>
+          <grid row="8" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Response Header"/>
+          <visible value="true"/>
+        </properties>
+      </component>
+      <component id="c0a26" class="javax.swing.JCheckBox" binding="responseBodyCheckBox">
+        <constraints>
+          <grid row="9" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Response Body"/>
+        </properties>
+      </component>
+      <grid id="d40f6" binding="extractionRegexLabel" layout-manager="GridLayoutManager" row-count="1" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="0" left="0" bottom="0" right="0"/>
+        <constraints>
+          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="8" fill="2" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="a3f95" class="javax.swing.JLabel">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <labelFor value="ec18"/>
+              <text value="Extraction Regex"/>
+            </properties>
+          </component>
+          <component id="c2240" class="de.nieting.burpVars.UI.HelpLabel" binding="helpLabel1" custom-create="true" default-binding="true">
+            <constraints>
+              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties/>
+          </component>
+        </children>
+      </grid>
+      <component id="ec18" class="javax.swing.JTextField" binding="extractionRegexTextField">
+        <constraints>
+          <grid row="2" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="230" height="-1"/>
+          </grid>
+        </constraints>
+        <properties>
+          <font name="Monospaced"/>
+        </properties>
+      </component>
+      <component id="c521a" class="javax.swing.JCheckBox" binding="requestURLCheckBox" default-binding="true">
+        <constraints>
+          <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Request URL"/>
+        </properties>
+      </component>
+      <component id="aeaf2" class="javax.swing.JLabel" binding="searchLocationRequestLabel">
+        <constraints>
+          <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Search Location"/>
+        </properties>
+      </component>
+      <component id="8d13f" class="javax.swing.JLabel" binding="searchLocationResponseLabel">
+        <constraints>
+          <grid row="8" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Search Location"/>
+        </properties>
+      </component>
+    </children>
+  </grid>
+</form>
