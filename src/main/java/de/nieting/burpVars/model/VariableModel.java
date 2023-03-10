@@ -12,7 +12,7 @@ import java.util.TimerTask;
 public class VariableModel {
 
     private String variableName;
-    private String variableValue;
+    private String variableValue = "";
     private boolean updateAutomatically;
 
     private UpdateModel updateModel = new UpdateModel();
@@ -39,8 +39,14 @@ public class VariableModel {
     }
 
     public void setVariableValue(String variableValue) {
-        if (variableValue == null || variableValue.equals(this.variableValue)) return;
+        if (variableValue == null) {
+            this.variableValue = "";
+            return;
+        }
+
+        if (variableValue.equals(this.variableValue)) return;
         this.variableValue = variableValue;
+
         if (!DataModel.isInitialized) return;
 
         setLastUpdated(new Date());
