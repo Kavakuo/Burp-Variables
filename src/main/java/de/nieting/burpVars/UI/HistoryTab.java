@@ -68,9 +68,7 @@ public class HistoryTab {
         dataListener = new ListDataListener() {
             @Override
             public void intervalAdded(ListDataEvent e) {
-                if (historyList.getSelectedIndex() == -1 && historyListModel.getSize() > 0) {
-                    historyListSelectionModel.setSelectionInterval(0, 0);
-                }
+                // this will also increase the selection index
             }
 
             @Override
@@ -80,7 +78,9 @@ public class HistoryTab {
 
             @Override
             public void contentsChanged(ListDataEvent e) {
-
+                if (historyList.getSelectedIndex() == -1 && historyListModel.getSize() > 0) {
+                    historyListSelectionModel.setSelectionInterval(0, 0);
+                }
             }
         };
     }

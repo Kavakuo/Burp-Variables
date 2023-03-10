@@ -3,7 +3,7 @@ plugins {
 }
 
 group 'de.nieting'
-version '0.1'
+version '0.3'
 
 repositories {
     mavenCentral()
