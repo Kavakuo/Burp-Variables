@@ -3,7 +3,7 @@ plugins {
 }
 
 group 'de.nieting'
-version '0.3'
+version '0.4'
 
 repositories {
     mavenCentral()
@@ -13,7 +13,7 @@ repositories {
 
 dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.14.2'
-    implementation 'net.portswigger.burp.extensions:montoya-api:2023.2'
+    implementation 'net.portswigger.burp.extensions:montoya-api:2023.4'
     implementation 'org.apache.logging.log4j:log4j-api:2.19.0'
     implementation 'org.apache.logging.log4j:log4j-core:2.19.0'
 

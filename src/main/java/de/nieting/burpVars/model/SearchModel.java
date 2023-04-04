@@ -2,6 +2,7 @@ package de.nieting.burpVars.model;
 
 import burp.api.montoya.http.handler.HttpResponseReceived;
 import burp.api.montoya.http.message.requests.HttpRequest;
+import burp.api.montoya.http.message.responses.HttpResponse;
 import de.nieting.burpVars.model.constants.SearchCaseSensitivity;
 import de.nieting.burpVars.model.constants.SearchOption;
 import de.nieting.burpVars.model.constants.SearchLocation;
@@ -128,7 +129,7 @@ public class SearchModel {
         return matches;
     }
 
-    public String extractFromResponse(HttpResponseReceived response) {
+    public String extractFromResponse(HttpResponse response) {
         var toBeSearched = "";
         var matches = false;
 

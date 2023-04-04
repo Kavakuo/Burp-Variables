@@ -66,6 +66,13 @@ public class DataModel extends AbstractTableModel {
         self = this;
     }
 
+    public static DataModel getInstance() {
+        if (!isInitialized) {
+            throw new RuntimeException("DataModel not initialized");
+        }
+        return self;
+    }
+
     public static DataModel fromJson(String json) {
         var dataModel = new DataModel();
         if (json == null) {
@@ -257,92 +264,6 @@ public class DataModel extends AbstractTableModel {
         }
         var a = DateFormat.getDateTimeInstance();
         return a.format(date);
-    }
-
-    public HttpRequest replaceVariable(String varName, HttpRequest req, ToolType source) {
-        LOGGER.debug("Trying to replace variable {}", varName);
-        var replaceString = String.format("${%s%s}", Constants.VAR_PREFIX, varName);
-        var varModel = variables.stream().filter(i -> i.getVariableName().equals(varName)).findFirst().get();
-
-        var replaceModel = varModel.getReplaceModel();
-        HttpRequest newReq = req;
-        if (!replaceModel.getToolSelectionModel().validToolSource(source)) {
-            LOGGER.debug("Variable: {}, stop replacing, invalid source {}", varName, source.name());
-            return req;
-        }
-
-        if (replaceModel.isReplaceOnlyInScope() && !API.getInstance().getApi().scope().isInScope(req.url())) {
-            LOGGER.debug("Variable: {}, stop replacing, url not in scope", varName);
-            return req;
-        }
-
-
-        boolean replaceVar = false;
-        var matchingModels = replaceModel.getReplaceListModel().getList();
-        if (matchingModels.size() == 0) replaceVar = true;
-        for (var matchingModel : matchingModels) {
-            if (matchingModel.matchesRequest(req)) {
-                replaceVar = true;
-                break;
-            }
-        }
-
-        if (!replaceVar) {
-            LOGGER.debug("Variable: {}, stop replacing, no request matching condition matched", varName);
-            return req;
-        }
-
-        LOGGER.info("Replacing variable {} in request", varName);
-
-        for (var header: req.headers()) {
-            var headerName = header.name();
-            var headerValue = header.value().replace(replaceString, varModel.getVariableValue());
-            if (headerName.contains(replaceString)) {
-                LOGGER.debug("Variable: {}, replacing variable in request header name {}", varName, headerName);
-                newReq = newReq
-                        .withRemovedHeader(headerName)
-                        .withAddedHeader(headerName.replace(replaceString, varModel.getVariableValue()), headerValue);
-            } else if (header.value().contains(replaceString)) {
-                LOGGER.debug("Variable: {}, replacing variable in request header value", varName);
-                newReq = newReq.withUpdatedHeader(headerName, headerValue);
-            }
-        }
-
-        var bodyS = newReq.bodyToString();
-        if (bodyS.contains(replaceString)) {
-            LOGGER.debug("Variable: {}, replacing variable in request body", varName);
-            newReq = newReq.withBody(bodyS.replace(replaceString, varModel.getVariableValue()));
-        }
-
-        var paths = newReq.path();
-        if (paths.contains(replaceString)) {
-            LOGGER.debug("Variable: {}, replacing variable in url path", varName);
-            newReq = newReq.withPath(paths.replace(replaceString, varModel.getVariableValue()));
-        }
-
-
-        var params = newReq.parameters().stream().filter(i-> i.type() == HttpParameterType.URL).toList();
-        var urlUtils = API.getInstance().getApi().utilities().urlUtils();
-        for (var param: params) {
-
-            var paramName = urlUtils.decode(param.name());
-            var paramValue = urlUtils.decode(param.value());
-            var paramValueEnc = paramValue.replace(replaceString, urlUtils.encode(varModel.getVariableValue()));
-            var paramNameEnc = paramName.replace(replaceString, urlUtils.encode(varModel.getVariableValue()));
-
-            if (paramName.contains(replaceString)) {
-                // replaces value and name
-                LOGGER.debug("Variable: {}, replacing variable in parameter name {}", varName, paramName);
-                newReq = newReq
-                        .withRemovedParameters(param)
-                        .withAddedParameters(HttpParameter.urlParameter(paramNameEnc, paramValueEnc));
-            } else if (paramValue.contains(replaceString)) {
-                LOGGER.debug("Variable: {}, replacing variable in parameter value", varName);
-                newReq = newReq.withUpdatedParameters(HttpParameter.urlParameter(paramName, paramValueEnc));
-            }
-        }
-
-        return newReq;
     }
 
 

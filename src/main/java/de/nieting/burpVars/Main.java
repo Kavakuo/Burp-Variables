@@ -64,9 +64,13 @@ public class Main implements BurpExtension {
         api.userInterface().registerSuiteTab("Variables", ui);
 
         api.http().registerHttpHandler(new VariableHttpHandler(api, dataModel));
+        var handler = new VariableProxyHandler();
+        api.proxy().registerRequestHandler(handler);
+        api.proxy().registerResponseHandler(handler);
 
         api.userInterface().registerContextMenuItemsProvider(new VariableContextMenu(dataModel));
 
+        LOGGER.info("Extension loaded. Ensure that this extension is loaded at the bottom of the extension list.");
         LOGGER.info("Initialization complete...");
     }
 
